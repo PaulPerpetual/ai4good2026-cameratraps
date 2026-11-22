@@ -1,0 +1,26 @@
+v2L_448
+  held-out F1 by shrinkage: {1.0: 0.7112, 0.3: 0.8493, 0.1: 0.8483, 0.03: 0.8442, 0.01: 0.8331, 0.003: 0.8314, 0.001: 0.8301}
+  s=0.3: image 0.7811
+  own s=0.3: image 0.7811
+v3L_256
+  held-out F1 by shrinkage: {1.0: 0.6835, 0.3: 0.8215, 0.1: 0.8252, 0.03: 0.818, 0.01: 0.8139, 0.003: 0.8118, 0.001: 0.8121}
+  s=0.3: image 0.7682
+  own s=0.1: image 0.7700
+v3L_448
+  held-out F1 by shrinkage: {1.0: 0.6697, 0.3: 0.8318, 0.1: 0.8235, 0.03: 0.8182, 0.01: 0.8142, 0.003: 0.8133, 0.001: 0.8133}
+  s=0.3: image 0.7705
+  own s=0.3: image 0.7705
+('v2L_448', 's') image 0.7811 vote 0.9431
+('v2L_448', 'own s') image 0.7811 vote 0.9431
+('v3L_256', 's') image 0.7682 vote 0.9221
+('v3L_256', 'own s') image 0.7700 vote 0.9323
+('v3L_448', 's') image 0.7705 vote 0.9278
+('v3L_448', 'own s') image 0.7705 vote 0.9278
+('v3L_448', 's') minus ('v2L_448', 's') image: -0.0107 CI [-0.0241, +0.0219] share above 0 0.409
+('v3L_448', 's') minus ('v2L_448', 's') vote: -0.0153 CI [-0.0464, +0.0183] share above 0 0.214
+('v3L_256', 's') minus ('v2L_448', 's') image: -0.0129 CI [-0.0376, +0.0240] share above 0 0.389
+('v3L_256', 's') minus ('v2L_448', 's') vote: -0.0211 CI [-0.0555, +0.0144] share above 0 0.168
+('v3L_448', 'own s') minus ('v2L_448', 'own s') image: -0.0107 CI [-0.0241, +0.0219] share above 0 0.409
+('v3L_448', 'own s') minus ('v2L_448', 'own s') vote: -0.0153 CI [-0.0464, +0.0183] share above 0 0.214
+('v3L_256', 'own s') minus ('v2L_448', 'own s') image: -0.0112 CI [-0.0359, +0.0262] share above 0 0.423
+('v3L_256', 'own s') minus ('v2L_448', 'own s') vote: -0.0108 CI [-0.0471, +0.0227] share above 0 0.278
