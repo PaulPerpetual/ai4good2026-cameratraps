@@ -1,0 +1,48 @@
+{
+  "methods": [
+    {
+      "mode": "crop",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "n_seeds": 3,
+      "validation_macro_f1_mean": 0.5666724511805246,
+      "validation_macro_f1_std": 0.006744817712792485,
+      "test_macro_f1_mean": 0.5028586109896402,
+      "test_macro_f1_std": 0.003938013313921073
+    },
+    {
+      "mode": "masked_crop",
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "n_seeds": 3,
+      "validation_macro_f1_mean": 0.5502205301706746,
+      "validation_macro_f1_std": 0.011603804824652238,
+      "test_macro_f1_mean": 0.5091449155299472,
+      "test_macro_f1_std": 0.007967229570319034
+    }
+  ],
+  "paired_sam_minus_crop": [
+    {
+      "seed": 0,
+      "validation_macro_f1": -0.02004231970185233,
+      "test_macro_f1": 0.006626129902202349
+    },
+    {
+      "seed": 1,
+      "validation_macro_f1": 0.002953843808429113,
+      "test_macro_f1": 0.010367697061351877
+    },
+    {
+      "seed": 2,
+      "validation_macro_f1": -0.03226728713612681,
+      "test_macro_f1": 0.0018650866573665659
+    }
+  ],
+  "std_definition": "sample standard deviation across seeds; ddof=1"
+}
