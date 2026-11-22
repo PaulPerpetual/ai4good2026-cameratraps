@@ -8,6 +8,7 @@ __pycache__/
 
 # Results from your runs — yours, not the repo's
 results/*
+!results/runs.jsonl
 !results/test_ledger.jsonl
 logs/
 

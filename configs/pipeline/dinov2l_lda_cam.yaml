@@ -1,0 +1,10 @@
+# Consolidated pipeline run. See PROTOCOL.md; run with:
+#   uv run python -m iwildcam.pipeline configs/pipeline/dinov2l_lda_cam.yaml
+name: dinov2l_lda_cam
+backbone: dinov2l          # dinov2l | bioclip2 (iwildcam/backbones.py)
+view: crop              # MegaDetector v5a crop (protocol)
+head: lda_cam           # lda | lda_cam
+select_on: per_image    # protocol: per-image macro F1 averaged over the 5 camera-wise CV folds
+grid:
+  shrinkage: [0.01, 0.03, 0.1, 0.3]
+  camera_weight: [1, 2, 4, 8, 16]

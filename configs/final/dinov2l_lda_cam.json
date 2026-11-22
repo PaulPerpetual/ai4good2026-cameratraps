@@ -1,5 +1,7 @@
 {
+  "name": "dinov2l_lda_cam",
   "backbone": "dinov2l",
+  "view": "crop",
   "head": "lda_cam",
   "shrinkage": 0.01,
   "camera_weight": 2,

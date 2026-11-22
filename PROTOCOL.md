@@ -87,7 +87,7 @@ fit on 4 folds' cameras, score the held-out fold's cameras.
   every chosen value.
 - Test features are read only through `iwildcam.ledger.load_test()`, which appends who/when/
   commit to `results/test_ledger.jsonl` and refuses a configuration already scored. The ledger
-  is committed. `scripts/evaluate.py test` also checks that official val reproduces the number
+  is committed. `iwildcam.pipeline --test` also checks that official val reproduces the number
   in the config before opening test.
 - Ablations, sweeps and "which is better" questions are answered on CV + official val, never
   on test.
@@ -103,7 +103,42 @@ source-only methods, and also run the same method with training-camera empty fra
 designs already do this.) Validation analogue: for CV, the held-out fold's empty frames play
 the role of the target frames.
 
-## 8. Repository layout
+## 8. What is consolidated and what is a separate experiment
+
+**Consolidated** means it runs inside the one pipeline, from one YAML config:
+
+```
+crop ──► frozen backbone ──► feature store ──► head ──► burst vote ──► score
+MD v5a   dinov2l | bioclip2                 lda |      detector-      CV folds · official val
+(Pia)    (George, Paul)     (George)        lda_cam    weighted       · test once via ledger
+                                            (George)   (Paul)         (Shayan's folds)
+
+uv run python -m iwildcam.pipeline configs/pipeline/dinov2l_lda_cam.yaml [--test]
+```
+
+Every run writes its frozen settings to `configs/final/<name>.json` and a row to
+`results/runs.jsonl` (committed), so all pipeline results land in one table.
+
+**Separate experiments** live in `experiments/<person_topic>/` with their own code, imported as
+they were. Their numbers were produced before this protocol and are **not directly
+comparable** to pipeline numbers. Each one could be brought into the pipeline as follows:
+
+| experiment | what it is | how it would enter the pipeline | effort |
+|---|---|---|---|
+| `pia_background` | background replacement / SAM cutouts, ResNet-50 end to end | as an **augment** stage: paste animals onto source or target empty frames, embed with the frozen backbone, add to training (same stage as Junwu's) | GPU to embed composites |
+| `junwu_copypaste` | copy-paste onto source/target empty frames, frozen DINOv2-L + SGD | the same **augment** stage; weight of synthetic rows chosen on CV | composites exist for DINOv2-L; re-embed for BioCLIP 2 |
+| `george_followup` long tail | prior adjustment tau·log(prior) on scores | a **head option** (`prior_tau`), chosen on CV | small, CPU |
+| `george_followup` calibration | temperature scaling, ECE | an extra **report** next to F1 | small, CPU |
+| `shayan_new_camera_cost` | cost of an unseen camera; k labelled bursts per camera | an **evaluation mode** (k bursts per held-out camera); switch to `data/camera_folds.csv` | moderate, CPU |
+| `george_exp3` | the original of the shared core; LoRA fine-tuning | core already consolidated; fine-tuning stays separate (does not fit frozen features and did not help DINOv2-L) | n/a |
+| `george_followup` efficiency | compute cost vs accuracy, MD v6-compact | stays separate (a deployment study, not a method) | n/a |
+| `paul_burst_vote_backbones` | burst vote, DINOv2 vs v3, BioCLIP fine-tuning | burst vote and backbone choice are consolidated; fine-tuning stays separate | n/a |
+
+Adding a stage: a config key, a function in `iwildcam/pipeline.py`, a line in this table and
+in the changelog. Until a method is in the pipeline, report it in its README with the
+protocol's scoring (sections 4–5) so it can at least be placed next to pipeline numbers.
+
+## 9. Repository layout
 
 ```
 iwildcam/             shared code
@@ -115,20 +150,22 @@ iwildcam/             shared code
   lda.py                linear discriminant, plain and camera-aware (George)
   metrics.py            macro F1, burst vote, camera bootstrap
   ledger.py             test access
+  pipeline.py           the consolidated pipeline (one YAML config per run)
   data.py, train*.py    starter code (unchanged)
 scripts/
   extract_features.py   fill the feature store (resumable)
-  evaluate.py           select (CV + val) and test (once) for backbone + LDA
   run_store.sh, when_gpu_free.sh
 experiments/<person_topic>/   each person's work, imported as it was, with a README
-configs/final/        frozen final configurations
-results/test_ledger.jsonl
+configs/pipeline/     one YAML per pipeline run
+configs/final/        frozen settings chosen by each run
+results/runs.jsonl          every pipeline run (committed)
+results/test_ledger.jsonl   every test access (committed)
 ```
 
 A new experiment goes in `experiments/<name>/` with a README stating: the question, which
 store folders it reads, how settings were chosen, and its numbers under this protocol.
 
-## 9. Status and open points (2026-11-22)
+## 10. Status and open points (2026-11-22)
 
 | | under protocol? | note |
 |---|---|---|
@@ -136,15 +173,17 @@ store folders it reads, how settings were chosen, and its numbers under this pro
 | BioCLIP 2 crop features | queued on GPU | `logs/store.log` |
 | DINOv2-L + camera-aware LDA | selected (`configs/final/dinov2l_lda_cam.json`), test not scored | CV 0.707 · 0.898; val 0.795 · 0.933 (shrinkage 0.01, camera weight 2) |
 | BioCLIP 2 + camera-aware LDA | after extraction | |
-| Pia background modes | not yet | ResNet-50 end to end; rerun on frozen features is cheap |
-| Junwu copy-paste | not yet | weight chosen on val, 1 seed |
+| Pia background modes | separate | see section 8 |
+| Junwu copy-paste | separate | see section 8 |
 | Shayan new-camera cost | already CV-based | uses its own folds; switch to `camera_folds.csv` |
-| George follow-ups | partly | settings chosen on held-out training cameras already |
+| George follow-ups | separate | see section 8 |
 
 Open:
 - Contamination: MegaDetector was probably trained on WCS images (iWildCam's source); check
   whether BioCLIP 2's training data (TreeOfLife-200M) contains iWildCam/LILA camera-trap images.
 
 ## Changelog
+- 2026-11-22: single entry point `iwildcam/pipeline.py` with YAML configs; section 8 lists what is
+  consolidated and what stays a separate experiment.
 - 2026-11-22: first version (Paul). Selection by per-image CV macro F1 (decided over per burst,
   which for DINOv2-L would pick shrinkage 0.3 / camera weight 16 instead of 0.01 / 2).

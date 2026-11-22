@@ -1,6 +1,13 @@
-> **Team branch `consolidated`.** Shared data and evaluation protocol: [PROTOCOL.md](PROTOCOL.md).
-> Shared code in `iwildcam/` (crops, backbones, feature store, CV folds, LDA, metrics, test ledger);
-> each person's experiments in `experiments/`. The starter README follows unchanged.
+> **Team branch `consolidated`.** One pipeline, one protocol: see [PROTOCOL.md](PROTOCOL.md).
+>
+> - **Consolidated pipeline** (`iwildcam/pipeline.py`, one YAML per run): MegaDetector v5a crop →
+>   frozen DINOv2-L or BioCLIP 2 → shared feature store → camera-aware LDA → detector-weighted
+>   burst vote → macro F1 on camera-wise CV folds, official val, and test once (logged).
+>   `uv run python -m iwildcam.pipeline configs/pipeline/dinov2l_lda_cam.yaml`
+> - **Separate experiments** (`experiments/<person_topic>/`): each person's work as it was, not yet
+>   comparable to pipeline numbers. PROTOCOL.md section 8 says how each could join the pipeline.
+>
+> The starter README follows unchanged.
 
 # 🐆 Species classification on camera trap imagery
 
