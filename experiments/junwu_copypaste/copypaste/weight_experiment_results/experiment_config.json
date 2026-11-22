@@ -1,0 +1,18 @@
+{
+  "weights": [
+    0,
+    1,
+    2,
+    5,
+    10
+  ],
+  "seed": 42,
+  "original_train": 85265,
+  "synthetic_train": 478,
+  "validation": 14652,
+  "classifier": "SGDClassifier",
+  "loss": "log_loss",
+  "alpha": 0.0001,
+  "max_iter": 100,
+  "weight_normalization": "mean equals one"
+}

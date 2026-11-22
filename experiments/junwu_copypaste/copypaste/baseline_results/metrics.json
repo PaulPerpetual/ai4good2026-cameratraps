@@ -1,0 +1,10 @@
+{
+  "experiment": "baseline",
+  "model": "DINOv2 + SGD logistic classifier",
+  "seed": 42,
+  "train_images": 85265,
+  "validation_images": 14652,
+  "accuracy": 0.846983346983347,
+  "macro_f1": 0.6280816486315586,
+  "weighted_f1": 0.8468286731961802
+}
