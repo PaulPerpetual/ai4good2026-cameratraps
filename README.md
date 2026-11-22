@@ -1,3 +1,7 @@
+> **Team branch `consolidated`.** Shared data and evaluation protocol: [PROTOCOL.md](PROTOCOL.md).
+> Shared code in `iwildcam/` (crops, backbones, feature store, CV folds, LDA, metrics, test ledger);
+> each person's experiments in `experiments/`. The starter README follows unchanged.
+
 # 🐆 Species classification on camera trap imagery
 
 ![Eight camera-trap photographs, one per species, each labelled with its species name and camera id](assets/species_gallery.jpg)

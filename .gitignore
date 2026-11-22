@@ -7,7 +7,8 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Results from your runs — yours, not the repo's
-results/
+results/*
+!results/test_ledger.jsonl
 logs/
 
 # Image data and build intermediates live under data/; see data/.gitignore
