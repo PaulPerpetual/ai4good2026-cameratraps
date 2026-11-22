@@ -1,0 +1,85 @@
+{
+  "backbone": "dinov2l",
+  "head": "lda_cam",
+  "shrinkage": 0.01,
+  "camera_weight": 2,
+  "fit_on": "official_ood train cameras",
+  "store_manifest": {
+    "model": "dinov2_vitl14_reg",
+    "repo": "facebookresearch/dinov2:7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+    "weights_file": "dinov2_vitl14_reg4_pretrain.pth",
+    "weights_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+    "size": 448,
+    "height": 448,
+    "interpolation": "bilinear, antialias",
+    "normalisation": "imagenet",
+    "amp": "float16",
+    "features": "[x_norm_clstoken, mean(x_norm_patchtokens)]",
+    "dim": 2048,
+    "dtype": "float16",
+    "split": "official_ood",
+    "folds": [
+      "train",
+      "val"
+    ],
+    "selection": "cameras with labelled train/val images",
+    "image_dir": "/zfs/ai4good/groups/camera-traps/raw/train",
+    "n": 146008,
+    "limit": null,
+    "index_sha256": "f415b68f3b314f7917dcd5c170a672641c4d626bcd727ac5f702425c10c9abf9",
+    "counts": {
+      "train/labelled": 85265,
+      "train/empty": 41144,
+      "val/labelled": 14652,
+      "val/empty": 4947
+    },
+    "view": "crop",
+    "crop_rule": "most confident MegaDetector v5a animal box if conf >= 0.2, squared in pixels, padded 15% per side, shifted inside the frame, cut from the original; else whole frame",
+    "detections": "/zfs/ai4good/groups/camera-traps/pdelap-background-20261018/data/md-v5a.json",
+    "boxes_sha256": "98e5b5597b371d627ae549a5d9f6d20834632a0348db131ef955e37da5b14daf",
+    "n_ok": 146008,
+    "n_undecodable": 0,
+    "failures": [],
+    "seconds_this_session": 1080.6,
+    "images_per_second": 135.1,
+    "gpu_peak_gib": 3.96,
+    "batch_size": 64,
+    "num_workers": 16,
+    "torch": "2.6.0+cu124",
+    "gpu": "NVIDIA L40S",
+    "host": "vinzant",
+    "finished": "2026-10-21 22:52:35",
+    "argv": [
+      "scripts/cache_features.py",
+      "--crop",
+      "--model",
+      "dinov2_vitl14_reg",
+      "--out",
+      "/zfs/ai4good/groups/camera-traps/features/dinov2_vitl14_reg_448_crop",
+      "--batch-size",
+      "64",
+      "--num-workers",
+      "16",
+      "--max-minutes",
+      "120"
+    ]
+  },
+  "cv": {
+    "per_image": 0.7066792036963454,
+    "per_burst": 0.8975623465874019
+  },
+  "official_val": {
+    "per_image": 0.7946118345711345,
+    "per_burst": 0.932907446162341
+  },
+  "official_val_ci95": {
+    "per_image": [
+      0.7389889532483394,
+      0.8801816843381415
+    ],
+    "per_burst": [
+      0.8690704886116526,
+      0.9692328696032239
+    ]
+  }
+}

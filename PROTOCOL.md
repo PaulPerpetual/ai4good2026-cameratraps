@@ -63,7 +63,8 @@ fit on 4 folds' cameras, score the held-out fold's cameras.
   camera-bootstrap 95% interval. They are not used to choose. Reason: with 32 cameras the
   interval on per-burst F1 is about ±5 points (DINOv2-L: 0.87–0.97), wider than most
   differences we care about; DINOv2 vs DINOv3 and several of our ablations were inside it.
-- Selection metric: mean per-image macro F1 over the folds. *(Open, see section 9.)*
+- Selection metric: mean per-image macro F1 over the folds (per burst is near its ceiling and
+  moves in coarse steps; the burst vote is applied on top of the chosen setting anyway).
 - Anything stochastic (training, augmentation sampling): at least 3 seeds, report mean ± std.
 
 ## 5. Scoring
@@ -133,7 +134,7 @@ store folders it reads, how settings were chosen, and its numbers under this pro
 |---|---|---|
 | DINOv2-L crop features (train/val, test) | yes | existing store; `_testempty` queued |
 | BioCLIP 2 crop features | queued on GPU | `logs/store.log` |
-| DINOv2-L + camera-aware LDA | selected, test not scored | CV 0.707 · 0.898; val 0.795 · 0.933 (shrinkage 0.01, camera weight 2) |
+| DINOv2-L + camera-aware LDA | selected (`configs/final/dinov2l_lda_cam.json`), test not scored | CV 0.707 · 0.898; val 0.795 · 0.933 (shrinkage 0.01, camera weight 2) |
 | BioCLIP 2 + camera-aware LDA | after extraction | |
 | Pia background modes | not yet | ResNet-50 end to end; rerun on frozen features is cheap |
 | Junwu copy-paste | not yet | weight chosen on val, 1 seed |
@@ -141,10 +142,9 @@ store folders it reads, how settings were chosen, and its numbers under this pro
 | George follow-ups | partly | settings chosen on held-out training cameras already |
 
 Open:
-- Selection metric per image vs per burst. They disagree for DINOv2-L: per image picks
-  (0.01, 2), per burst picks (0.3, 16).
 - Contamination: MegaDetector was probably trained on WCS images (iWildCam's source); check
   whether BioCLIP 2's training data (TreeOfLife-200M) contains iWildCam/LILA camera-trap images.
 
 ## Changelog
-- 2026-11-22: first version (Paul).
+- 2026-11-22: first version (Paul). Selection by per-image CV macro F1 (decided over per burst,
+  which for DINOv2-L would pick shrinkage 0.3 / camera weight 16 instead of 0.01 / 2).
