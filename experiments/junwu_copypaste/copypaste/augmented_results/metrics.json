@@ -1,0 +1,9 @@
+{
+  "experiment": "copy_paste_v6",
+  "original_train": 85265,
+  "synthetic_train": 478,
+  "validation": 14652,
+  "accuracy": 0.842001092001092,
+  "macro_f1": 0.6437595492224806,
+  "weighted_f1": 0.8450122926050566
+}

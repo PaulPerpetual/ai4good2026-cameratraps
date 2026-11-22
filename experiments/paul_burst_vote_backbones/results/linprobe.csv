@@ -1,0 +1,9 @@
+method,split,wd,balanced,val_macro_f1_present,test_macro_f1_present,test_accuracy
+linprobe-bioclip,official_ood,0.1,True,0.5034,0.4523,0.6745
+linprobe-bioclip,random_burst,0.1,False,0.5616,0.6134,0.7287
+zeroshot-bioclip,official_ood,,,,0.2696,0.492
+zeroshot-bioclip,random_burst,,,,0.2545,0.3501
+linprobe-resnet50,official_ood,0.1,False,0.4984,0.4226,0.6458
+linprobe-resnet50,random_burst,0.01,False,0.5728,0.6296,0.7415
+linprobe-bioclip-crop,official_ood,0.1,False,0.5939,0.5468,0.7357
+linprobe-bioclip-crop,random_burst,0.1,False,0.6308,0.6474,0.7446
